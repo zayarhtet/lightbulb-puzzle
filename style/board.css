@@ -1,10 +1,7 @@
 .board-style {
     border-collapse: collapse;
-    /* border-spacing: 0px; */
-    /* border: 1px solid #1F2798; */
-    border-radius : 10px;
     background-color: #bce6ff; /* #ffe5d8 */
-
+    margin: 50px auto 20px auto;
 }
 
 .board-style tbody tr td {
@@ -34,20 +31,18 @@
     background-color: #00ff00!important;
     color: black!important;
 }
-/* 
-.board-style tbody tr:first-child td:first-child {
-    border-top-left-radius: 10px;
-}
-.board-style tbody tr:first-child td:last-child {
-    border-top-right-radius: 10px;
-}
 
-.board-style tbody tr:last-child td:first-child {
-    border-bottom-left-radius: 10px;
+@media screen and (max-width: 600px) {
+    .board-style {
+        width: 400px;
+        height: auto;
+    }
+    .board-style tbody tr td {
+        padding: 20px;
+        width: 15px;
+        height: 15px;
+    }
 }
-.board-style tbody tr:last-child td:last-child {
-    border-bottom-right-radius: 10px;
-} */
 
 
 

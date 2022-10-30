@@ -1,0 +1,135 @@
+:root {
+    /* --blue-theme: #bce6ff; */
+    --blue-theme: white;
+  }
+
+.body-style {
+    background: url("../resources/motto.png") no-repeat center;
+    /* width: 100%; */
+    background-size: cover;
+    /* opacity: 90%; */
+    min-height: 620px;
+    border-radius: 0 0 10px 10px;
+}
+
+.title-style {
+    font-size: 20px;
+    font-weight: bold;
+    color: #1f2798;
+    text-align: center;
+    margin: 0 auto;
+    padding: 10px;
+    border-top: 1px solid #1f2798;
+    border-left: 1px solid #1f2798;
+    border-right: 1px solid #1f2798;
+    border-radius: 10px 10px 0 0;
+    background-color: var(--blue-theme);
+    background-color: var(--blue-theme);
+}
+
+.game-option-button {
+    width: 150px;
+    height: 150px;
+    border: 1px solid #1f2798;
+    border-radius: 5px;
+    background-color: var(--blue-theme);
+    color: #1f2798;
+    font-weight: bold;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 200ms 50ms ease-out;
+}
+
+.game-option-button:hover, .board-button:hover {
+    background-color: #ffe5d8;
+    box-shadow: 0 0 10px #ffe5d8;
+}
+
+.menu-button-box {
+    /* vertical center align */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 200px;
+    /* align-content: center; */
+}
+
+.hide {
+    display:none;
+}
+
+.board-list {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.board h2 {
+    /* generate white header for each board */
+    background-color: white;
+    color: #1f2798;
+    font-weight: bold;
+    font-size: 20px;
+    padding: 10px;
+    border-radius: 0px;
+    transition: all 200ms 50ms ease-out;
+}
+
+.board {
+    padding: 10px;
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.board-box {
+    padding: 10px;
+    margin: 10px;
+    transition: all 200ms 50ms ease-out;
+    border: none;
+    background-color: var(--blue-theme);
+}
+
+.board-box:hover {
+    box-shadow: 0 0 10px #ffe5d8;
+    background-color: #ffe5d8;
+}
+
+.board-img {
+    width: 300px;
+    height: 300px;
+}
+
+.board-button-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+}
+
+.board-button {
+    width: 150px;
+    height: 50px;
+    border: 1px solid #1f2798;
+    /* border-radius: 5px; */
+    background-color: var(--blue-theme);
+    color: #1f2798;
+    font-weight: bold;
+    font-size: 15px;
+    cursor: pointer;
+    transition: all 200ms 50ms ease-out;
+}
+
+.main-box-style {
+    margin: 0 auto;
+    width: 80%;
+}
+
+@media screen and (max-width: 480px) {
+    .main-box-style {
+        width: 90%;
+    }
+}

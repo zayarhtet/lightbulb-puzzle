@@ -1,4 +1,3 @@
-var documentBodyElem = document.body;
 
 function generateBoard(dataMatrix) {
     var tableElem = document.createElement('table')
@@ -7,7 +6,6 @@ function generateBoard(dataMatrix) {
             var tableRowElem = document.createElement('tr')
                 for (var j = 0; j < dataMatrix.length; j++) {
                     var tableDataElem = document.createElement('td')
-                    // tableDataElem.innerText = i + ',' + j
                     if (dataMatrix[i][j] == 'obstacle') {
                         tableDataElem.classList.add('obstacle')
                     } else if (!isNaN(dataMatrix[i][j])) {
@@ -44,7 +42,7 @@ function generateBoard(dataMatrix) {
     tableElem.id = 'board'
     tableElem.classList.add('board-style')
 
-    documentBodyElem.appendChild(tableElem)
+    mainBox.appendChild(tableElem)
 }
 
 function boardEventListener(event, ev) {
@@ -52,9 +50,10 @@ function boardEventListener(event, ev) {
         ev.parentElement.rowIndex,
         ev.cellIndex
       ];
+
+    var beginnerBoard = loadSavedGame(playerName.value)
     if (row === undefined || col === undefined) return; 
     if (ev.classList.contains('obstacle')) return;
-
     
     if (beginnerBoard[row][col] == 'bulb') {
         nonIlluminate(row, col, beginnerBoard)
@@ -63,12 +62,13 @@ function boardEventListener(event, ev) {
         illuminate(row, col, beginnerBoard)
         beginnerBoard[row][col] = 'bulb'
     }
-    document.body.removeChild(document.getElementById('board'))
+
+    saveGame(playerName.value, beginnerBoard)
+    mainBox.removeChild(document.getElementById('board'))
     generateBoard(beginnerBoard)
     var tableElem = document.getElementById('board')
     delegate(tableElem, 'td', 'click', boardEventListener)
 
-    console.log(beginnerBoard)
 }
 
 function nonIlluminate(row, col, board) {
@@ -172,6 +172,7 @@ function illuminate(row, col, board) {
     while (colDown < board.length && (board[colDown][col] != 'obstacle' && isNaN(board[colDown][col]))) board[colDown++][col] = 'on'
 }
 
-generateBoard(beginnerBoard)
-var tableElem = document.getElementById('board')
-delegate(tableElem, 'td', 'click', boardEventListener)
+// generateBoard(beginnerBoard)
+// var tableElem = document.getElementById('board')
+// delegate(tableElem, 'td', 'click', boardEventListener)
+
