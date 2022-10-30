@@ -1,0 +1,54 @@
+.board-style {
+    border-collapse: collapse;
+    /* border-spacing: 0px; */
+    /* border: 1px solid #1F2798; */
+    border-radius : 10px;
+    background-color: #bce6ff; /* #ffe5d8 */
+
+}
+
+.board-style tbody tr td {
+    border: 1px solid #1f2798;
+    padding: 20px;
+    /* color: #fe7a15; */
+    color: white;
+    text-align: center;
+    width: 25px;
+    height: 25px;
+}
+
+.bulb-on {
+    color: #fe7a15!important;
+    background-color: #ffe5d8;
+}
+
+.obstacle {
+    background-color: #1f2798;
+}
+
+.error {
+    background-color: #ff0000!important;
+}
+
+.passed {
+    background-color: #00ff00!important;
+    color: black!important;
+}
+/* 
+.board-style tbody tr:first-child td:first-child {
+    border-top-left-radius: 10px;
+}
+.board-style tbody tr:first-child td:last-child {
+    border-top-right-radius: 10px;
+}
+
+.board-style tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+.board-style tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+} */
+
+
+
+
