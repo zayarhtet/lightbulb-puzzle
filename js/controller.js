@@ -51,7 +51,7 @@ function boardEventListener(event, ev) {
         ev.cellIndex
       ];
 
-    var beginnerBoard = loadSavedGame(playerName.value)
+    var beginnerBoard = loadSavedGame(playerName.value)['board']
     if (row === undefined || col === undefined) return; 
     if (ev.classList.contains('obstacle')) return;
     
@@ -61,14 +61,41 @@ function boardEventListener(event, ev) {
     } else if (beginnerBoard[row][col] == 'plain') {
         illuminate(row, col, beginnerBoard)
         beginnerBoard[row][col] = 'bulb'
+    } else if (beginnerBoard[row][col] == 'on') {
+        alert('You cannot place a bulb on a lit square')
+        return;
     }
 
-    saveGame(playerName.value, beginnerBoard)
+    saveGame(playerName.value, beginnerBoard, timer)
     mainBox.removeChild(document.getElementById('board'))
-    generateBoard(beginnerBoard)
+    generateBoardWithEventListener(beginnerBoard)
+    if (checkVictory(beginnerBoard)) {
+        unHideThreeButtons()
+        return;
+    }
+}
+
+function generateBoardWithEventListener(dataMatrix) {
+    generateBoard(dataMatrix)
     var tableElem = document.getElementById('board')
     delegate(tableElem, 'td', 'click', boardEventListener)
+}
 
+function checkVictory(dataMatrix) {
+    for (var i = 0; i < dataMatrix.length; i++) {
+        for (var j = 0; j < dataMatrix.length; j++) {
+            if (dataMatrix[i][j] == 'plain') return false
+            else if (!isNaN(dataMatrix[i][j])) {
+                var total = 0
+                if (i-1 >= 0 && dataMatrix[i-1][j] == 'bulb') total++
+                if (i+1 < dataMatrix.length && dataMatrix[i+1][j] == 'bulb') total++
+                if (j-1 >= 0 && dataMatrix[i][j-1] == 'bulb') total++
+                if (j+1 < dataMatrix.length && dataMatrix[i][j+1] == 'bulb') total++
+                if (total != dataMatrix[i][j]) return false
+            }
+        }
+    }
+    return true
 }
 
 function nonIlluminate(row, col, board) {
@@ -172,7 +199,14 @@ function illuminate(row, col, board) {
     while (colDown < board.length && (board[colDown][col] != 'obstacle' && isNaN(board[colDown][col]))) board[colDown++][col] = 'on'
 }
 
-// generateBoard(beginnerBoard)
-// var tableElem = document.getElementById('board')
-// delegate(tableElem, 'td', 'click', boardEventListener)
-
+function calculateElapsedTime() {
+    stopWatch = setInterval(function() {
+        timer += 1;
+        var hours = Math.floor(timer / 3600);
+        var minutes = Math.floor((timer - (hours * 3600)) / 60);
+        var seconds = timer - (hours * 3600) - (minutes * 60);
+        var beginnerBoard = loadSavedGame(playerName.value)
+        saveGame(playerName.value, beginnerBoard['board'], timer)
+        elapsedTime.innerText = hours + "h " + minutes + "m " + seconds + "s ";
+    }, 1000)
+}

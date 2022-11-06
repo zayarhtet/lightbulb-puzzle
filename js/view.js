@@ -1,6 +1,15 @@
 var body = document.body;
-newGame = document.getElementById('menu-new-game'),
-savedGame = document.getElementById('menu-saved-game')
+var newGame = document.getElementById('menu-new-game')
+var savedGame = document.getElementById('menu-saved-game')
+var playerNameShow = document.getElementById('player-name')
+var elapsedTime = document.getElementById('elapsed-time')
+playerName
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.key === 'Enter') {
+        startGame()
+    }
+});
 
 function hideBoardPage() {
     document.getElementById('boardList').classList.add('hide')
@@ -22,13 +31,15 @@ function unhideMenuPage() {
     document.getElementById('menu-saved-game').classList.remove('hide')
 }
 
-function unhideGameBoard(board) {
+function unhideGameBoard() {
     document.getElementById('gameBoard').classList.remove('hide')
 }
 
 function hideGameBoard() {
     document.getElementById('gameBoard').classList.add('hide')
-    mainBox.removeChild(document.getElementById('board'))
+    // console.log(mainBox)
+    if (mainBox.hasChildNodes('board'))
+        mainBox.removeChild(document.getElementById('board'))
     // savedGame()
 }
 
@@ -44,8 +55,14 @@ function backToMenu() {
     hideBoardPage()
     hidePlayerNamePage()
     hideGameBoard()
-
+    hideThreeButtons()
     unhideMenuPage()
+    playerName.value = ''
+    console.log('heheh')
+    console.log(timer)
+    timer = 0
+    elapsedTime.innerHTML = '0h 0m 0s'
+    clearInterval(stopWatch)
 
 }
 
@@ -61,6 +78,10 @@ function backToPlayerName() {
 
 function startGame() {
     // console.log(document.getElementById('playerName'))
+    if (playerName.value == '') {
+        alert('Please enter your name')
+        return
+    }
     hideMenuPage()
     hidePlayerNamePage()
     unhideBoardPage()
@@ -72,16 +93,27 @@ function newGamePage() {
     unhideBoardPage()
 }
 
+function unHideThreeButtons() {
+    hideGameBoard()
+    document.getElementById('threeButtons').classList.remove('hide')
+}
+
+function hideThreeButtons() {
+    document.getElementById('threeButtons').classList.add('hide')
+}
+
 function renderNewBoard(boardName) {
+    playerBoardName = boardName
     hideBoardPage()
     unhideGameBoard()
+
+    playerNameShow.innerHTML = playerName.value
+    calculateElapsedTime()
+
     var newBoard = loadNewBoard(boardName)
-    console.log(newBoard)
-    console.log(playerName.value)
-    saveGame(playerName.value, newBoard)
-    generateBoard(newBoard)
-    var tableElem = document.getElementById('board')
-    delegate(tableElem, 'td', 'click', boardEventListener)
+    saveGame(playerName.value, newBoard, timer)
+
+    generateBoardWithEventListener(newBoard)
 }
 
 function renderSavedBoard(playername) {
@@ -89,8 +121,42 @@ function renderSavedBoard(playername) {
     unhideBoardPage()
     var savedBoard = loadSavedBoard(playername)
     generateBoard(savedBoard)
-    var tableElem = document.getElementById('board')
-    delegate(tableElem, 'td', 'click', boardEventListener)
+}
+
+function clearBoard() {
+    hideThreeButtons()
+    var confirmPrompt = confirm('Are you sure you want to clear the board?')
+    if (!confirmPrompt) return;
+    console.log(playerBoardName)
+    var playerBoard = loadNewBoard(playerBoardName)
+    console.log(playerBoard)
+    saveGame(playerName.value, playerBoard, timer)
+
+    if (mainBox.hasChildNodes('board'))
+        mainBox.removeChild(document.getElementById('board'))
+    else {
+        unhideGameBoard()
+        clearInterval(stopWatch)
+        timer = 0;
+        elapsedTime.innerText = '0h 0m 0s'
+        calculateElapsedTime()
+    }
+    generateBoardWithEventListener(playerBoard)
+}
+
+function backToBoard() {
+    hideThreeButtons()
+    unhideGameBoard()
+    var playerBoard = loadSavedGame(playerName.value)['board']
+    generateBoardWithEventListener(playerBoard)
+}
+
+function resetBoard() {
+    clearInterval(stopWatch)
+    timer = 0
+    elapsedTime.innerText = '0h 0m 0s'
+    clearBoard()
+    calculateElapsedTime()
 }
 
 // function renderSavedBoard() {}

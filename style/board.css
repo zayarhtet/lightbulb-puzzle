@@ -1,7 +1,7 @@
 .board-style {
     border-collapse: collapse;
     background-color: #bce6ff; /* #ffe5d8 */
-    margin: 50px auto 20px auto;
+    margin: 20px auto 20px auto;
 }
 
 .board-style tbody tr td {
@@ -12,11 +12,13 @@
     text-align: center;
     width: 25px;
     height: 25px;
+    transition: all 200ms 50ms ease-out;
 }
 
 .bulb-on {
     color: #fe7a15!important;
     background-color: #ffe5d8;
+    /* transition: all 200ms 50ms ease-out; */
 }
 
 .obstacle {

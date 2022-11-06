@@ -1,6 +1,9 @@
 var documentBodyElem = document.body;
 var mainBox = document.getElementById('main-box')
 var playerName = document.getElementById('playerNameInput')
+var timer = 0
+var stopWatch
+var playerBoardName
 
 function delegate(parent, child, when, what){
     function eventHandlerFunction(event){
@@ -12,7 +15,6 @@ function delegate(parent, child, when, what){
             what(event, closestChild)
         }
     }
-
     parent.addEventListener(when, eventHandlerFunction)
 }
 
@@ -42,9 +44,13 @@ function loadSavedGame(name) {
     return permaLoadJSON('savedGame')[name]
 }
 
-function saveGame(name, board) {
+function saveGame(name, board, time) {
     var savedGame = permaLoadJSON('savedGame')
-    savedGame[name] = board
+    savedGame[name] = {
+        boardName: playerBoardName,
+        board: board,
+        time: time
+    }
     permaSaveJSON('savedGame', savedGame)
 }
 
@@ -54,31 +60,50 @@ function removeBoard(name) {
     permaSaveJSON('boards', boards)
 }
 
-// var advancedboard = [
-//     ['plain','obstacle','plain','plain','plain','plain','plain','plain','plain','plain'],
-//     ['plain','plain','plain','plain','plain',3,'plain',2,'plain','obstacle'],
-//     ['plain',0,'obstacle','plain','plain','plain','plain','obstacle','plain','plain'],
-//     ['plain','plain','plain','plain','obstacle','plain','plain','plain','plain','plain'],
-//     ['plain',1,'plain','plain','obstacle',1,'obstacle','plain','plain','plain'],
-//     ['plain','plain','plain','obstacle','obstacle','obstacle','plain','plain',3,'plain'],
-//     ['plain','plain','plain','plain','plain','obstacle','plain','plain','plain','plain'],
-//     ['plain','plain',1,'plain','plain','plain','plain',0,'obstacle','plain'],
-//     [3,'plain','obstacle','plain',0,'plain','plain','plain','plain','plain'],
-//     ['plain','plain','plain','plain','plain','plain','plain','plain',0,'plain']
-// ]
+function loadData() {
+    if (permaLoadJSON('boards') == null) {
+        permaSaveJSON('boards', {})
+        saveBoard('beginnerBoard',  beginnerBoard)
+        saveBoard('intermediateBoard', intermediateBoard)
+        saveBoard('advancedBoard', advancedBoard)
+        console.log('boards loaded')
+    }
+    if (permaLoadJSON('savedGame') == null) {
+        permaSaveJSON('savedGame', {})
+    }
+}
 
-// var intermediateBoard = [
-//     ['plain','plain',0,'plain','obstacle','plain','plain'],
-//     ['plain','plain','plain','plain','plain','plain','plain'],
-//     ['obstacle','plain', 'obstacle','plain',3,'plain','obstacle'],
-//     ['plain','plain','plain',1,'plain','plain','plain'],
-//     [2,'plain', 'obstacle','plain','obstacle','plain','obstacle'],
-//     ['plain','plain','plain','plain','plain','plain','plain'],
-//     ['plain','plain','obstacle','plain',2,'plain','plain'],
-// ]
+var advancedBoard = [
+    ['plain','obstacle','plain','plain','plain','plain','plain','plain','plain','plain'],
+    ['plain','plain','plain','plain','plain',3,'plain',2,'plain','obstacle'],
+    ['plain',0,'obstacle','plain','plain','plain','plain','obstacle','plain','plain'],
+    ['plain','plain','plain','plain','obstacle','plain','plain','plain','plain','plain'],
+    ['plain',1,'plain','plain','obstacle',1,'obstacle','plain','plain','plain'],
+    ['plain','plain','plain','obstacle','obstacle','obstacle','plain','plain',3,'plain'],
+    ['plain','plain','plain','plain','plain','obstacle','plain','plain','plain','plain'],
+    ['plain','plain',1,'plain','plain','plain','plain',0,'obstacle','plain'],
+    [3,'plain','obstacle','plain',0,'plain','plain','plain','plain','plain'],
+    ['plain','plain','plain','plain','plain','plain','plain','plain',0,'plain']
+]
 
-// saveBoard('advancedBoard', advancedboard)
-// saveBoard('intermediateBoard', intermediateBoard)
+var intermediateBoard = [
+    ['plain','plain',0,'plain','obstacle','plain','plain'],
+    ['plain','plain','plain','plain','plain','plain','plain'],
+    ['obstacle','plain', 'obstacle','plain',3,'plain','obstacle'],
+    ['plain','plain','plain',1,'plain','plain','plain'],
+    [2,'plain', 'obstacle','plain','obstacle','plain','obstacle'],
+    ['plain','plain','plain','plain','plain','plain','plain'],
+    ['plain','plain','obstacle','plain',2,'plain','plain'],
+]
 
-// removeBoard('advanced')
-// removeBoard('intermediate')
+var beginnerBoard = [
+    ["plain","plain","plain",1,"plain","plain","plain"],
+    ["plain",0,"plain","plain","plain",2,"plain"],
+    ["plain","plain","plain","plain","plain","plain","plain"],
+    ["obstacle","plain","plain","obstacle","plain","plain","obstacle"],
+    ["plain","plain","plain","plain","plain","plain","plain"],
+    ["plain","obstacle","plain","plain","plain",2,"plain"],
+    ["plain","plain","plain",3,"plain","plain","plain"]
+]
+
+loadData()

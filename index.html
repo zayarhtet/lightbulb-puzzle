@@ -32,22 +32,27 @@
             </div>
           </div>
           <!-- menu buttons END -->
+          <div>
+
+          </div>
           <!-- ask for player name -->
           <div id="playerName" class="col-12 hide">
             <div class="player-name">
-              <h2>Enter your name</h2>
-              <input type="text" id="playerNameInput" class="player-name-input" placeholder="Enter your name">
+              <div class="player-name-box">
+                <h2 class="your-name-title">Enter your name</h2>
+                <input type="text" id="playerNameInput" class="player-name-input" placeholder="Enter your name">
+              </div>
               <div class="row">
                 <div class="col-6 button-col">
-                  <div class="player-name-button-box">
-                    <button class="player-name-button" onclick="backToMenu()">
+                  <div class="board-button-box">
+                    <button class="board-button" onclick="backToMenu()">
                         Back
                     </button>
                   </div>
                 </div>
                 <div class="col-6">
-                  <div class="player-name-button-box">
-                    <button class="player-name-button" onclick="startGame()">
+                  <div class="board-button-box">
+                    <button class="board-button" onclick="startGame()">
                         Start
                     </button>
                   </div>
@@ -92,24 +97,72 @@
           <!-- boards END -->
           <!-- game -->
           <div id="gameBoard" class="col-12 hide">
+            <div class="player-info">
+              <div>
+                <label for="player-name">Name: </label>
+                <span id="player-name" style="font-weight:bold; font-size: 25px;"></span>
+              </div>
+              <!-- elapsed time -->
+              <div id="elapsed-time-box" class="elapsed-time">
+                <label for="elapsed-time">Elapsed Time: </label>
+                <span id="elapsed-time" style="font-weight:bold; font-size: 25px">0h 0m 0s</span>
+              </div>
+            </div>
             <div id="main-box" class="main-box-style"></div>
             <div id="gameBoardMenu" class="row hide">
-              <div class="col-6 button-col">
+              <div class="col-4 button-col">
                 <div class="board-button-box">
                   <button class="board-button" onclick="backToMenu()">
                       Back To Main Menu
                   </button>
                 </div>
               </div>
-              <div class="col-6">
+              <div class="col-4">
                 <div class="board-button-box">
-                  <button class="board-button">
-                      Save Game
+                  <button class="board-button" onclick="clearBoard()">
+                      Clear Board
                   </button>
                 </div>
               </div>
+              <div class="col-4">
+                <div class="board-button-box">
+                  <button class="board-button" onclick="resetBoard()">
+                      Restart Game
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
           <!-- game END -->
+          <!-- three buttons in a page, back to menu, restart, back to board -->
+          <div id="threeButtons" class="col-12 hide">
+            <!-- text to indicate you have won -->
+            <div id="winText" class="win-text">
+              <h2>You have won!</h2>
+            </div>
+            <div class="row">
+              <div class="col-4 button-col">
+                <div class="board-button-box">
+                  <button class="board-button" onclick="backToMenu()">
+                      Back To Main Menu
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="board-button-box">
+                  <button class="board-button" onclick="clearBoard()">
+                      Restart Game
+                  </button>
+                </div>
+              </div>
+              <div class="col-4">
+                <div class="board-button-box">
+                  <button class="board-button" onclick="backToBoard()">
+                      Back To Board
+                  </button>
+                </div>
+              </div>
+            </div>
         </div>
       </div>
     </section>
