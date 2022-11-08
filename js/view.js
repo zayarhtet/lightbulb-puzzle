@@ -22,13 +22,17 @@ function unhideBoardPage() {
 }
 
 function hideMenuPage() {
-    document.getElementById('menu-new-game').classList.add('hide')
-    document.getElementById('menu-saved-game').classList.add('hide')
+    document.getElementById('menu').classList.add('hide')
+    // document.getElementById('menu-new-game').classList.add('hide')
+    // document.getElementById('menu-score-board').classList.add('hide')
+    // document.getElementById('menu-saved-game').classList.add('hide')
 }
 
 function unhideMenuPage() {
-    document.getElementById('menu-new-game').classList.remove('hide')
-    document.getElementById('menu-saved-game').classList.remove('hide')
+    document.getElementById('menu').classList.remove('hide')
+    // document.getElementById('menu-new-game').classList.remove('hide')
+    // document.getElementById('menu-score-board').classList.remove('hide')
+    // document.getElementById('menu-saved-game').classList.remove('hide')
 }
 
 function unhideGameBoard() {
@@ -56,14 +60,17 @@ function backToMenu() {
     hidePlayerNamePage()
     hideGameBoard()
     hideThreeButtons()
+    hideScoreBoard()
     unhideMenuPage()
     playerName.value = ''
-    console.log('heheh')
-    console.log(timer)
     timer = 0
     elapsedTime.innerHTML = '0h 0m 0s'
     clearInterval(stopWatch)
 
+}
+
+function hideScoreBoard() {
+    document.getElementById('scoreBoard').classList.add('hide')
 }
 
 function askPlayerName() {
@@ -95,6 +102,7 @@ function newGamePage() {
 
 function unHideThreeButtons() {
     hideGameBoard()
+    clearInterval(stopWatch)
     document.getElementById('threeButtons').classList.remove('hide')
 }
 
@@ -114,6 +122,11 @@ function renderNewBoard(boardName) {
     saveGame(playerName.value, newBoard, timer)
 
     generateBoardWithEventListener(newBoard)
+}
+
+function showSavedGameList() {
+    hideMenuPage()
+
 }
 
 function renderSavedBoard(playername) {
@@ -147,7 +160,8 @@ function clearBoard() {
 function backToBoard() {
     hideThreeButtons()
     unhideGameBoard()
-    var playerBoard = loadSavedGame(playerName.value)['board']
+    var scoreBoard = loadScoreBoard()
+    var playerBoard = scoreBoard.find(x => x.player == playerName.value).board
     generateBoardWithEventListener(playerBoard)
 }
 
@@ -157,6 +171,53 @@ function resetBoard() {
     elapsedTime.innerText = '0h 0m 0s'
     clearBoard()
     calculateElapsedTime()
+}
+
+function showScoreBoard() {
+    hideMenuPage()
+    unhideScoreBoard()
+    var scoreBoard = loadScoreBoard()
+    generateScoreBoard(scoreBoard)
+}
+
+function unhideScoreBoard() {
+    document.getElementById('scoreBoard').classList.remove('hide')
+}
+
+function generateScoreBoard(scoreBoard) {
+    console.log("scoreBoard", scoreBoard)
+    var scoreTable = document.getElementById('score-board-table')
+    scoreTable.innerHTML = ''
+    var scoreBoardHeader = document.createElement('tr')
+    var playerNameHeader = document.createElement('th')
+    var playerDateTimeHeader = document.createElement('th')
+    var playerTimeHeader = document.createElement('th')
+    var playerBoardNameHeader = document.createElement('th')
+    playerNameHeader.innerText = 'Player Name'
+    playerBoardNameHeader.innerText = 'Board Name'
+    playerTimeHeader.innerText = 'Elapsed Time'
+    playerDateTimeHeader.innerText = 'Date'
+    scoreBoardHeader.appendChild(playerDateTimeHeader)
+    scoreBoardHeader.appendChild(playerNameHeader)
+    scoreBoardHeader.appendChild(playerBoardNameHeader)
+    scoreBoardHeader.appendChild(playerTimeHeader)
+    scoreTable.appendChild(scoreBoardHeader)
+    scoreBoard.forEach(x => {
+        var tr = document.createElement('tr')
+        var tdDateTime = document.createElement('td')
+        tdDateTime.innerText = x.dateTime
+        tr.appendChild(tdDateTime)        
+        var tdPlayerName = document.createElement('td')
+        tdPlayerName.innerText = x.player
+        tr.appendChild(tdPlayerName)
+        var tdBoardName = document.createElement('td')
+        tdBoardName.innerText = x.boardName
+        tr.appendChild(tdBoardName)
+        var tdElapsedTime = document.createElement('td')
+        tdElapsedTime.innerText = x.elapsedTime
+        tr.appendChild(tdElapsedTime)
+        scoreTable.appendChild(tr)
+    })
 }
 
 // function renderSavedBoard() {}

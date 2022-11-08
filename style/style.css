@@ -27,6 +27,16 @@
     box-shadow: 0 0 10px #1f2798;
 }
 
+.menu-box-style {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    margin: 100px auto;
+    margin-top: 200px!important;
+    /* margin: 0 auto; */
+}
+
 .game-option-button {
     width: 150px;
     height: 60px;
@@ -50,7 +60,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 200px;
+    margin: 10px;
+    /* margin-top: 200px; */
     /* align-content: center; */
 }
 
@@ -127,6 +138,7 @@
 .main-box-style {
     margin: 0 auto;
     width: 80%;
+    transition: all 200ms 50ms ease-out;
 }
 
 .player-name-box {
@@ -179,10 +191,54 @@
     text-align: center;
     /* margin: 100px; */
 }
+/********************* ScoreBoard Starts ***************************/
+.score-board-header {
+    font-size: 30px;
+    font-weight: bold;
+    color: #ffe5d8;
+    text-align: center;
+    margin: 40px;
+}
 
+.score-board-body {
+    display: flex;
+    justify-content: space-around;
+    
+    /* align-items: center; */
+    margin: 20px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+.score-board-table {
+    width: 60%;
+    height: 100%;
+    border: 1px solid #1f2798;
+    border-radius: 5px;
+    background-color: var(--blue-theme);
+    color: #1f2798;
+    padding: 10px;
+    font-size: 15px;
+    transition: all 200ms 50ms ease-out;
+    overflow-y: auto;
+}
+
+.score-board-table td {
+    padding: 20px;
+    text-align: center;
+}
+
+.score-board-table th {
+    /* padding: 20px; */
+    height: 50px;
+}
 
 @media screen and (max-width: 480px) {
     .main-box-style {
         width: 90%;
+    }
+    .score-board-table {
+        width: 100%;
+        /* background-color: #1f2798;
+        color: white; */
     }
 }

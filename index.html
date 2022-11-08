@@ -21,20 +21,40 @@
       <div class="container ">
         <div id="main-row" class="row">
           <!-- menu buttons -->
-          <div id="menu-new-game" class="col-6 button-col">
-            <div class="menu-button-box">
-              <button id="new-game" class="game-option-button" onclick="askPlayerName()">New Game</button>
+          <div id="menu" class="col-12 menu-box-style">
+            <div id="menu-new-game" class="button-col">
+              <div class="menu-button-box">
+                <button id="new-game" class="game-option-button" onclick="askPlayerName()">New Game</button>
+              </div>
             </div>
-          </div>
-          <div id="menu-saved-game" class="col-6 button-col">
-            <div class="menu-button-box">
-              <button id="saved-game" class="game-option-button">Saved Game</button>
+            <div id="menu-score-board" class="button-col">
+              <div class="menu-button-box">
+                <button id="score-board" class="game-option-button" onclick="showScoreBoard()">Score Board</button>
+              </div>
+            </div>
+            <div id="menu-saved-game" class="button-col">
+              <div class="menu-button-box">
+                <button id="saved-game" class="game-option-button" onclick="showSavedGameList()">Saved Game</button>
+              </div>
             </div>
           </div>
           <!-- menu buttons END -->
+          <!-- scoreboard starts -->
           <div>
-
+            <div id="scoreBoard" class="score-board-div hide">
+              <div class="score-board-header">
+                <h2>Score Board</h2>
+              </div>
+              <div class="score-board-body">
+                <table id="score-board-table" class="score-board-table">
+                </table>
+              </div>
+              <div class="score-board-footer">
+                <button id="score-board-close" class="game-option-button" onclick="backToMenu()">Back to menu</button>
+              </div>
+            </div>
           </div>
+          <!-- scoreboard ends -->
           <!-- ask for player name -->
           <div id="playerName" class="col-12 hide">
             <div class="player-name">

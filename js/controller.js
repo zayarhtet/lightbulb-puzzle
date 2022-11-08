@@ -27,9 +27,11 @@ function generateBoard(dataMatrix) {
                         tableDataElem.innerHTML = '<i class="fa-solid fa-lightbulb"></i>'
                     } else if (dataMatrix[i][j] == 'on') {
                         tableDataElem.classList.add('bulb-on')
+                        tableDataElem.classList.add('hover-red')
                     } else if (dataMatrix[i][j] == 'plain') {
                         tableDataElem.innerHTML = ''
                         tableDataElem.classList.remove('bulb-on')
+                        tableDataElem.classList.add('hover-white')
                     }
                     tableRowElem.appendChild(tableDataElem)
                 }
@@ -71,6 +73,9 @@ function boardEventListener(event, ev) {
     generateBoardWithEventListener(beginnerBoard)
     if (checkVictory(beginnerBoard)) {
         unHideThreeButtons()
+        console.log("was here")
+        recordTheScore()
+        removeSavedGame(playerName.value)
         return;
     }
 }
@@ -202,11 +207,15 @@ function illuminate(row, col, board) {
 function calculateElapsedTime() {
     stopWatch = setInterval(function() {
         timer += 1;
-        var hours = Math.floor(timer / 3600);
-        var minutes = Math.floor((timer - (hours * 3600)) / 60);
-        var seconds = timer - (hours * 3600) - (minutes * 60);
         var beginnerBoard = loadSavedGame(playerName.value)
         saveGame(playerName.value, beginnerBoard['board'], timer)
-        elapsedTime.innerText = hours + "h " + minutes + "m " + seconds + "s ";
+        elapsedTime.innerText = calculateTime(timer);
     }, 1000)
+}
+
+function calculateTime(timer) {
+    var hours = Math.floor(timer / 3600);
+    var minutes = Math.floor((timer - (hours * 3600)) / 60);
+    var seconds = timer - (hours * 3600) - (minutes * 60);
+    return hours + "h " + minutes + "m " + seconds + "s ";
 }

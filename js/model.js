@@ -71,6 +71,42 @@ function loadData() {
     if (permaLoadJSON('savedGame') == null) {
         permaSaveJSON('savedGame', {})
     }
+    if (permaLoadJSON('scoreBoard') == null) {
+        permaSaveJSON('scoreBoard', [])
+    }
+}
+
+function loadScoreBoard() {
+    return permaLoadJSON('scoreBoard')
+}
+
+function saveScoreBoard(scoreBoard) {
+    permaSaveJSON('scoreBoard', scoreBoard)
+}
+
+function removeSavedGame(name) {
+    var savedGame = permaLoadJSON('savedGame')
+    delete savedGame[name]
+    permaSaveJSON('savedGame', savedGame)
+}
+
+function recordTheScore() {
+    var beginnerBoard = loadSavedGame(playerName.value)
+    var time = beginnerBoard['time']
+    var boardName = beginnerBoard['boardName']
+    var board = beginnerBoard['board']
+    var player = playerName.value
+    var scoreBoard = loadScoreBoard()
+    var m = new Date();
+    var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
+    scoreBoard.push({
+        'player':player, 
+        'boardName': boardName, 
+        'elapsedTime': time, 
+        'board': board,
+        'dateTime': dateString})
+    console.log("was here")
+    saveScoreBoard(scoreBoard)
 }
 
 var advancedBoard = [
