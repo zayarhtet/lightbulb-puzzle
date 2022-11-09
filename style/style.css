@@ -192,7 +192,7 @@
     /* margin: 100px; */
 }
 /********************* ScoreBoard Starts ***************************/
-.score-board-header {
+.page-header {
     font-size: 30px;
     font-weight: bold;
     color: #ffe5d8;
@@ -220,6 +220,7 @@
     font-size: 15px;
     transition: all 200ms 50ms ease-out;
     overflow-y: auto;
+    border-collapse: collapse;
 }
 
 .score-board-table td {
@@ -230,6 +231,18 @@
 .score-board-table th {
     /* padding: 20px; */
     height: 50px;
+}
+
+.score-board-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+#saved-game-table tr:hover {
+    background-color: #ffe5d8;
+}
+
+#saved-game-table tr:first-child:hover {
+    background-color: white;
 }
 
 @media screen and (max-width: 480px) {

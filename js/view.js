@@ -3,6 +3,7 @@ var newGame = document.getElementById('menu-new-game')
 var savedGame = document.getElementById('menu-saved-game')
 var playerNameShow = document.getElementById('player-name')
 var elapsedTime = document.getElementById('elapsed-time')
+
 playerName
     .addEventListener("keyup", function(event) {
     event.preventDefault();
@@ -23,28 +24,20 @@ function unhideBoardPage() {
 
 function hideMenuPage() {
     document.getElementById('menu').classList.add('hide')
-    // document.getElementById('menu-new-game').classList.add('hide')
-    // document.getElementById('menu-score-board').classList.add('hide')
-    // document.getElementById('menu-saved-game').classList.add('hide')
 }
 
 function unhideMenuPage() {
     document.getElementById('menu').classList.remove('hide')
-    // document.getElementById('menu-new-game').classList.remove('hide')
-    // document.getElementById('menu-score-board').classList.remove('hide')
-    // document.getElementById('menu-saved-game').classList.remove('hide')
-}
-
-function unhideGameBoard() {
-    document.getElementById('gameBoard').classList.remove('hide')
 }
 
 function hideGameBoard() {
     document.getElementById('gameBoard').classList.add('hide')
-    // console.log(mainBox)
     if (mainBox.hasChildNodes('board'))
         mainBox.removeChild(document.getElementById('board'))
-    // savedGame()
+}
+
+function unhideGameBoard() {
+    document.getElementById('gameBoard').classList.remove('hide')
 }
 
 function hidePlayerNamePage() {
@@ -55,22 +48,54 @@ function unhidePlayerNamePage() {
     document.getElementById('playerName').classList.remove('hide')
 }
 
+function hideScoreBoard() {
+    document.getElementById('scoreBoard').classList.add('hide')
+}
+
+function unhideScoreBoard() {
+    document.getElementById('scoreBoard').classList.remove('hide')
+}
+
+function hideThreeButtons() {
+    document.getElementById('threeButtons').classList.add('hide')
+}
+
+function unHideThreeButtons() {
+    hideGameBoard()
+    clearInterval(stopWatch)
+    document.getElementById('threeButtons').classList.remove('hide')
+}
+
+function hideSavedGameList() {
+    document.getElementById('savedGame').classList.add('hide')
+}
+function unhideSavedGameList() {
+    document.getElementById('savedGame').classList.remove('hide')
+}
+
+function hideClearAndRestartButton() {
+    document.getElementById('clearBoard').classList.add('hide')
+    document.getElementById('restartBoard').classList.add('hide')
+}
+
+function unhideClearAndRestartButton() {
+    document.getElementById('clearBoard').classList.remove('hide')
+    document.getElementById('restartBoard').classList.remove('hide')
+}
+
 function backToMenu() {
     hideBoardPage()
     hidePlayerNamePage()
     hideGameBoard()
     hideThreeButtons()
     hideScoreBoard()
+    hideSavedGameList()
+    unhideClearAndRestartButton()
     unhideMenuPage()
     playerName.value = ''
     timer = 0
     elapsedTime.innerHTML = '0h 0m 0s'
     clearInterval(stopWatch)
-
-}
-
-function hideScoreBoard() {
-    document.getElementById('scoreBoard').classList.add('hide')
 }
 
 function askPlayerName() {
@@ -84,7 +109,6 @@ function backToPlayerName() {
 }
 
 function startGame() {
-    // console.log(document.getElementById('playerName'))
     if (playerName.value == '') {
         alert('Please enter your name')
         return
@@ -92,22 +116,11 @@ function startGame() {
     hideMenuPage()
     hidePlayerNamePage()
     unhideBoardPage()
-    //renderboardPage() // render board page
 }
 
 function newGamePage() {
     hideMenuPage()
     unhideBoardPage()
-}
-
-function unHideThreeButtons() {
-    hideGameBoard()
-    clearInterval(stopWatch)
-    document.getElementById('threeButtons').classList.remove('hide')
-}
-
-function hideThreeButtons() {
-    document.getElementById('threeButtons').classList.add('hide')
 }
 
 function renderNewBoard(boardName) {
@@ -126,14 +139,58 @@ function renderNewBoard(boardName) {
 
 function showSavedGameList() {
     hideMenuPage()
+    unhideSavedGameList()
+    var scoreBoard = loadSavedGameList()
+    generateSavedGameList(scoreBoard)
+}
 
+function generateSavedGameList(savedBoard) {
+    var savedGameList = document.getElementById('saved-game-table')
+    savedGameList.innerHTML = ''
+    var tableHeader = document.createElement('tr')
+    
+    var date = document.createElement('th')
+    date.innerText = 'Date'
+    var playerNameHeader = document.createElement('th')
+    playerNameHeader.innerText = 'Player Name'
+    var boardName = document.createElement('th')
+    boardName.innerText = 'Board Name'
+    var elapsedTime = document.createElement('th')
+    elapsedTime.innerText = 'Elapsed Time'
+    tableHeader.append(date, playerNameHeader, boardName, elapsedTime)
+    savedGameList.append(tableHeader)
+    Object.keys(savedBoard).forEach(key => {
+        var row = document.createElement('tr')
+        var date = document.createElement('td')
+        var playerName = document.createElement('td')
+        var boardName = document.createElement('td')
+        var elapsedTime = document.createElement('td')
+        date.innerText = savedBoard[key].dateTime
+        playerName.innerText = key
+        boardName.innerText = savedBoard[key].boardName
+        elapsedTime.innerText = savedBoard[key].elapsedTime
+
+        row.addEventListener('click', () => {
+            renderSavedBoard(key)
+        })
+
+        row.append(date, playerName, boardName, elapsedTime)
+        savedGameList.appendChild(row)
+    })
 }
 
 function renderSavedBoard(playername) {
     hideMenuPage()
-    unhideBoardPage()
-    var savedBoard = loadSavedBoard(playername)
-    generateBoard(savedBoard)
+    hideSavedGameList()
+    unhideGameBoard()
+    playerNameShow.innerHTML = playername
+    playerName.value = playername
+    var savedBoard = loadSavedGame(playername)
+    playerBoardName = savedBoard.boardName
+    elapsedTime.innerHTML = calculateTime(savedBoard.elapsedTime)
+    timer = savedBoard.elapsedTime
+    calculateElapsedTime()
+    generateBoardWithEventListener(savedBoard.board)
 }
 
 function clearBoard() {
@@ -160,6 +217,7 @@ function clearBoard() {
 function backToBoard() {
     hideThreeButtons()
     unhideGameBoard()
+    hideClearAndRestartButton()
     var scoreBoard = loadScoreBoard()
     var playerBoard = scoreBoard.find(x => x.player == playerName.value).board
     generateBoardWithEventListener(playerBoard)
@@ -178,10 +236,6 @@ function showScoreBoard() {
     unhideScoreBoard()
     var scoreBoard = loadScoreBoard()
     generateScoreBoard(scoreBoard)
-}
-
-function unhideScoreBoard() {
-    document.getElementById('scoreBoard').classList.remove('hide')
 }
 
 function generateScoreBoard(scoreBoard) {

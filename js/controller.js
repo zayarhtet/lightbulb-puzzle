@@ -207,9 +207,9 @@ function illuminate(row, col, board) {
 function calculateElapsedTime() {
     stopWatch = setInterval(function() {
         timer += 1;
+        elapsedTime.innerText = calculateTime(timer);
         var beginnerBoard = loadSavedGame(playerName.value)
         saveGame(playerName.value, beginnerBoard['board'], timer)
-        elapsedTime.innerText = calculateTime(timer);
     }, 1000)
 }
 

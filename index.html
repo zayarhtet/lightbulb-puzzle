@@ -42,7 +42,7 @@
           <!-- scoreboard starts -->
           <div>
             <div id="scoreBoard" class="score-board-div hide">
-              <div class="score-board-header">
+              <div class="page-header">
                 <h2>Score Board</h2>
               </div>
               <div class="score-board-body">
@@ -55,6 +55,23 @@
             </div>
           </div>
           <!-- scoreboard ends -->
+          <!-- savedGame starts -->
+          <div>
+            <div id="savedGame" class="saved-game-div hide">
+              <div class="page-header">
+                <h2>Saved Game</h2>
+              </div>
+              <div class="score-board-body">
+                <table id="saved-game-table" class="score-board-table">
+                </table>
+              </div>
+              <div class="score-board-footer">
+                <button id="score-board-close" class="game-option-button" onclick="backToMenu()">Back to menu</button>
+              </div>
+            </div>
+          </div>
+            
+          <!-- savedGame ends -->
           <!-- ask for player name -->
           <div id="playerName" class="col-12 hide">
             <div class="player-name">
@@ -137,14 +154,14 @@
                   </button>
                 </div>
               </div>
-              <div class="col-4">
+              <div id="clearBoard" class="col-4">
                 <div class="board-button-box">
                   <button class="board-button" onclick="clearBoard()">
                       Clear Board
                   </button>
                 </div>
               </div>
-              <div class="col-4">
+              <div id="restartBoard" class="col-4">
                 <div class="board-button-box">
                   <button class="board-button" onclick="resetBoard()">
                       Restart Game

@@ -26,6 +26,10 @@ function permaLoadJSON(name){
     return JSON.parse(window.localStorage.getItem(name))
 }
 
+function permaDeleteJSON(name){
+    window.localStorage.removeItem(name)
+}
+
 function loadNewBoard(name) {
     return permaLoadJSON('boards')[name]
 }
@@ -36,20 +40,37 @@ function saveBoard(name, board) {
     permaSaveJSON('boards', boards)
 }
 
-function permaDeleteJSON(name){
-    window.localStorage.removeItem(name)
+function loadSavedGameList() {
+    return permaLoadJSON('savedGame')
 }
 
 function loadSavedGame(name) {
     return permaLoadJSON('savedGame')[name]
 }
 
+function loadScoreBoard() {
+    return permaLoadJSON('scoreBoard')
+}
+
+function saveScoreBoard(scoreBoard) {
+    permaSaveJSON('scoreBoard', scoreBoard)
+}
+
+function removeSavedGame(name) {
+    var savedGame = permaLoadJSON('savedGame')
+    delete savedGame[name]
+    permaSaveJSON('savedGame', savedGame)
+}
+
 function saveGame(name, board, time) {
     var savedGame = permaLoadJSON('savedGame')
+    var m = new Date();
+    var dateString = m.getUTCFullYear() +"/"+ (m.getUTCMonth()+1) +"/"+ m.getUTCDate() + " " + m.getUTCHours() + ":" + m.getUTCMinutes() + ":" + m.getUTCSeconds();
     savedGame[name] = {
+        dateTime: dateString,
         boardName: playerBoardName,
         board: board,
-        time: time
+        elapsedTime: time
     }
     permaSaveJSON('savedGame', savedGame)
 }
@@ -76,23 +97,9 @@ function loadData() {
     }
 }
 
-function loadScoreBoard() {
-    return permaLoadJSON('scoreBoard')
-}
-
-function saveScoreBoard(scoreBoard) {
-    permaSaveJSON('scoreBoard', scoreBoard)
-}
-
-function removeSavedGame(name) {
-    var savedGame = permaLoadJSON('savedGame')
-    delete savedGame[name]
-    permaSaveJSON('savedGame', savedGame)
-}
-
 function recordTheScore() {
     var beginnerBoard = loadSavedGame(playerName.value)
-    var time = beginnerBoard['time']
+    var time = beginnerBoard['elapsedTime']
     var boardName = beginnerBoard['boardName']
     var board = beginnerBoard['board']
     var player = playerName.value
