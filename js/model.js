@@ -116,6 +116,14 @@ function recordTheScore() {
     saveScoreBoard(scoreBoard)
 }
 
+function loadBoardList() {
+    return permaLoadJSON('boards')
+}
+
+function saveBoardList(boardList) {
+    permaSaveJSON('boards', boardList)
+}
+
 var advancedBoard = [
     ['plain','obstacle','plain','plain','plain','plain','plain','plain','plain','plain'],
     ['plain','plain','plain','plain','plain',3,'plain',2,'plain','obstacle'],

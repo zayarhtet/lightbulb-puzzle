@@ -38,14 +38,15 @@
 }
 
 .game-option-button {
-    width: 150px;
-    height: 60px;
+    min-width: 100px;
+    height: 40px;
+    padding: 10px;
     border: 1px solid #1f2798;
     border-radius: 5px;
     background-color: var(--blue-theme);
     color: #1f2798;
     font-weight: bold;
-    font-size: 20px;
+    font-size: 15px;
     cursor: pointer;
     transition: all 200ms 50ms ease-out;
 }
@@ -242,6 +243,14 @@
 }
 
 #saved-game-table tr:first-child:hover {
+    background-color: white;
+}
+
+#board-list-table tr:hover {
+    background-color: #ffe5d8;
+}
+
+#board-list-table tr:first-child:hover {
     background-color: white;
 }
 

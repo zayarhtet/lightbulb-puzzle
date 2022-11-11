@@ -90,6 +90,9 @@ function backToMenu() {
     hideThreeButtons()
     hideScoreBoard()
     hideSavedGameList()
+    hideNewBoardPage()
+    hideBoardList()
+    hideEditBoardPage()
     unhideClearAndRestartButton()
     unhideMenuPage()
     playerName.value = ''
@@ -116,6 +119,7 @@ function startGame() {
     hideMenuPage()
     hidePlayerNamePage()
     unhideBoardPage()
+    generatePlayerBoardList()
 }
 
 function newGamePage() {
@@ -271,6 +275,140 @@ function generateScoreBoard(scoreBoard) {
         tdElapsedTime.innerText = x.elapsedTime
         tr.appendChild(tdElapsedTime)
         scoreTable.appendChild(tr)
+    })
+}
+
+function showBoardList() {
+    hideMenuPage()
+    unhideBoardList()
+    var boardList = loadBoardList()
+    generateBoardList(boardList)
+}
+
+function generateBoardList(boardList) {
+    var boardListTable = document.getElementById('board-list-table')
+    boardListTable.innerHTML = ''
+    var boardListHeader = document.createElement('tr')
+    var boardNameHeader = document.createElement('th')
+    boardNameHeader.innerText = 'Board Name'
+    boardListHeader.appendChild(boardNameHeader)
+    boardListTable.appendChild(boardListHeader)
+    Object.keys(boardList).forEach(key => {
+        var tr = document.createElement('tr')
+        var tdBoardName = document.createElement('td')
+        tdBoardName.innerText = key
+        tr.appendChild(tdBoardName)
+        tr.addEventListener('click', () => {
+            editBoardPage()
+            renderNewBoardPage(key,boardList[key])
+        })
+        boardListTable.appendChild(tr)
+    })
+}
+
+function renderNewBoardPage(name, dataMatrix) {
+    var newBoardBox = document.getElementById('new-board-box')
+    newBoardBox.innerHTML = ''
+    var h2 = document.createElement('h2')
+    h2.innerText = name
+    h2.id = 'existing-board-name'
+    newBoardBox.appendChild(h2)
+    generateBoard(dataMatrix, newBoardBox, 'newBoard')
+    delegate(document.getElementById('newBoard'), 'td', 'click', newBoardEventListener)
+}
+
+function newBoardEventListener(event, ev) {
+    const [row, col] = [
+        ev.parentElement.rowIndex,
+        ev.cellIndex
+      ];
+    
+    var newBoardName = document.getElementById('existing-board-name').innerText
+    var boardList = loadBoardList()
+    var dataMatrix = boardList[newBoardName]
+
+    if (dataMatrix[row][col] == 'plain') dataMatrix[row][col] = 'obstacle'
+    else if (dataMatrix[row][col] == 'obstacle') dataMatrix[row][col] = 0
+    else if (dataMatrix[row][col] == 0) dataMatrix[row][col] = 1
+    else if (dataMatrix[row][col] == 1) dataMatrix[row][col] = 2
+    else if (dataMatrix[row][col] == 2) dataMatrix[row][col] = 3
+    else if (dataMatrix[row][col] == 3) dataMatrix[row][col] = 4
+    else if (dataMatrix[row][col] == 4) dataMatrix[row][col] = 'plain'
+
+    boardList[newBoardName] = dataMatrix
+    saveBoardList(boardList)
+    var newBoardBox = document.getElementById('new-board-box')
+    newBoardBox.removeChild(document.getElementById('newBoard'))
+    generateBoard(dataMatrix, newBoardBox, 'newBoard')
+    delegate(document.getElementById('newBoard'), 'td', 'click', newBoardEventListener)
+}
+
+
+function hideBoardList() {
+    document.getElementById('newBoardList').classList.add('hide')
+}
+
+function unhideBoardList() {
+    document.getElementById('newBoardList').classList.remove('hide')
+}
+
+function createNewBoard() {
+    hideBoardList()
+    unhideNewBoardPage()
+}
+
+function editBoardPage() {
+    hideBoardList()
+    hideNewBoardPage()
+    unhideEditBoardPage()
+}
+
+function hideEditBoardPage() {
+    document.getElementById('editBoardPage').classList.add('hide')
+}
+
+function unhideEditBoardPage() {
+    document.getElementById('editBoardPage').classList.remove('hide')
+}
+
+function unhideNewBoardPage() {
+    document.getElementById('new-board-page').classList.remove('hide')
+}
+
+function hideNewBoardPage() {
+    document.getElementById('new-board-page').classList.add('hide')
+}
+
+function backToBoardList() {
+    hideNewBoardPage()
+    hideEditBoardPage()
+    showBoardList()
+}
+
+function generatePlayerBoardList() {
+    var boardList = loadBoardList()
+    var playerBoardList = document.getElementById('player-board-list')
+    playerBoardList.innerHTML = ''
+    Object.keys(boardList).forEach(key => {
+        var div = document.createElement('div')
+        div.classList.add('board')
+
+        var h2 = document.createElement('h2')
+        h2.innerText = key
+        div.appendChild(h2)
+
+        var button = document.createElement('button')
+        button.classList.add('board-box')
+        button.setAttribute('onclick', `renderNewBoard('${key}')`)
+
+        var img = document.createElement('img')
+        img.setAttribute('src', `resources/${key}.png`)
+        img.setAttribute('alt', key)
+        img.classList.add('board-img')
+        button.appendChild(img)
+
+        div.appendChild(button)
+        playerBoardList.appendChild(div)
     })
 }
 

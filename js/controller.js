@@ -1,5 +1,5 @@
 
-function generateBoard(dataMatrix) {
+function generateBoard(dataMatrix, boardBox, boardId) {
     var tableElem = document.createElement('table')
         var tableBodyElem = document.createElement('tbody')
         for (var i = 0; i< dataMatrix.length; i++) {
@@ -41,10 +41,10 @@ function generateBoard(dataMatrix) {
     
     tableElem.appendChild(tableBodyElem)
 
-    tableElem.id = 'board'
+    tableElem.id = boardId
     tableElem.classList.add('board-style')
 
-    mainBox.appendChild(tableElem)
+    boardBox.appendChild(tableElem)
 }
 
 function boardEventListener(event, ev) {
@@ -81,7 +81,7 @@ function boardEventListener(event, ev) {
 }
 
 function generateBoardWithEventListener(dataMatrix) {
-    generateBoard(dataMatrix)
+    generateBoard(dataMatrix, mainBox, 'board')
     var tableElem = document.getElementById('board')
     delegate(tableElem, 'td', 'click', boardEventListener)
 }

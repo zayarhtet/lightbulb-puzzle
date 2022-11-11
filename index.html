@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="style/bootstrap-grid/bootstrap-grid.css" />
     <link rel="stylesheet" href="style/bootstrap-grid/bootstrap-grid.rtl.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"> -->
   </head>
   <body>
     <div id="title" class="title-style">
@@ -35,6 +34,11 @@
             <div id="menu-saved-game" class="button-col">
               <div class="menu-button-box">
                 <button id="saved-game" class="game-option-button" onclick="showSavedGameList()">Saved Game</button>
+              </div>
+            </div>
+            <div id="create-new-board" class="button-col">
+              <div class="menu-button-box">
+                <button id="create-board-button" class="game-option-button" onclick="showBoardList()">Create/Edit Board</button>
               </div>
             </div>
           </div>
@@ -70,8 +74,80 @@
               </div>
             </div>
           </div>
-            
           <!-- savedGame ends -->
+          <div>
+            <!-- list of boards -->
+            <div id="newBoardList" class="board-list-div hide">
+              <div class="page-header">
+                <h2>Board List</h2>
+              </div>
+              <div class="score-board-body">
+                <table id="board-list-table" class="score-board-table">
+                </table>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <div class="board-button-box">
+                    <button id="new-board-name-cancel" class="game-option-button" onclick="backToMenu()">Cancel</button>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="board-button-box">
+                    <button id="new-board-name-clear" class="game-option-button" onclick="createNewBoard()">Create New Board</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- createNewBoard starts -->
+          <div>
+            <div id="new-board-page" class="new-board-name-div col-12 hide">
+              <div class="page-header">
+                <h2>Create New Board</h2>
+              </div>
+              <div class="score-board-body">
+                <div class="new-board-name-input">
+                  <input id="new-board-name" class="player-name-input" type="text" placeholder="Enter new board name" />
+                  <div class="generate-board-button">
+                    <input class="quantity" min="1" max="15" name="quantity" value="1" type="number" />
+                    <button id="generate-board" class="" onclick="generateBoard()">Generate Board</button>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <div class="board-button-box">
+                    <button id="new-board-name-cancel" class="game-option-button" onclick="backToBoardList()">Back</button>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="board-button-box">
+                    <button id="new-board-name-create" class="game-option-button" onclick="createNewBoardName()">Generate</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+          <div>
+            <div id="editBoardPage" class="new-board-name-div col-12 hide">
+              <div class="page-header">
+                <h2>Edit Board</h2>
+              </div>
+              <div id="new-board-box" class="main-box-style"></div>
+              <div class="row">
+                <div class="col-6">
+                  <div class="board-button-box">
+                    <button id="new-board-name-cancel" class="game-option-button" onclick="backToBoardList()">Back To Menu</button>
+                  </div>
+                </div>
+                <div class="col-6">
+                  <div class="board-button-box">
+                    <button id="new-board-name-clear" class="game-option-button" onclick="backToMenu()">Reset</button>
+                  </div>
+                </div>
+              </div>
+          </div>
+
+          <!-- createNewBoard ends -->
           <!-- ask for player name -->
           <div id="playerName" class="col-12 hide">
             <div class="player-name">
@@ -100,20 +176,7 @@
           <!-- ask for player name END -->
           <!-- boards -->
           <div id="boardList" class="col-12 hide">
-            <div class="board-list">
-              <div class="board">
-                <h2>Beginner</h2>
-                <button class="board-box" onclick="renderNewBoard('beginnerBoard')"><img src="resources/beginner.png" class="board-img" alt=""></button>
-              </div>
-              <div class="board">
-                <h2>Intermediate</h2>
-                <button class="board-box" onclick="renderNewBoard('intermediateBoard')"><img src="resources/intermediate.png" class="board-img" alt=""></button>
-              </div>
-              <div class="board">
-                <h2>Advanced</h2>
-                <button class="board-box" onclick="renderNewBoard('advancedBoard')"><img src="resources/advanced.png" class="board-img" alt=""></button>
-              </div>
-            </div>
+            <div id="player-board-list" class="board-list"></div>
             <div id="boardListMenu" class="row hide">
               <div class="col-6">
                 <div class="board-button-box">
