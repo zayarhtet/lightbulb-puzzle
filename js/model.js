@@ -52,6 +52,12 @@ function loadScoreBoard() {
     return permaLoadJSON('scoreBoard')
 }
 
+function deleteRecordFromScoreBoard(name) {
+    var scoreBoard = loadScoreBoard()
+    scoreBoard = scoreBoard.filter(rec => rec.name == name)
+    saveScoreBoard(scoreBoard)
+}
+
 function saveScoreBoard(scoreBoard) {
     permaSaveJSON('scoreBoard', scoreBoard)
 }
@@ -60,6 +66,20 @@ function removeSavedGame(name) {
     var savedGame = permaLoadJSON('savedGame')
     delete savedGame[name]
     permaSaveJSON('savedGame', savedGame)
+}
+
+function loadBoardList() {
+    return permaLoadJSON('boards')
+}
+
+function saveBoardList(boardList) {
+    permaSaveJSON('boards', boardList)
+}
+
+function removeBoard(name) {
+    var boardList = loadBoardList()
+    delete boardList[name]
+    saveBoardList(boardList)
 }
 
 function saveGame(name, board, time) {
@@ -75,7 +95,13 @@ function saveGame(name, board, time) {
     permaSaveJSON('savedGame', savedGame)
 }
 
-function removeBoard(name) {
+function removeSavedGame(name) {
+    var savedGame = permaLoadJSON('savedGame')
+    delete savedGame[name]
+    permaSaveJSON('savedGame', savedGame)
+}
+
+function deleteBoardFromBoardList(name) {
     var boards = permaLoadJSON('boards')
     delete boards[name]
     permaSaveJSON('boards', boards)
@@ -114,14 +140,6 @@ function recordTheScore() {
         'dateTime': dateString})
     console.log("was here")
     saveScoreBoard(scoreBoard)
-}
-
-function loadBoardList() {
-    return permaLoadJSON('boards')
-}
-
-function saveBoardList(boardList) {
-    permaSaveJSON('boards', boardList)
 }
 
 var advancedBoard = [

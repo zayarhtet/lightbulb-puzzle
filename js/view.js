@@ -3,12 +3,21 @@ var newGame = document.getElementById('menu-new-game')
 var savedGame = document.getElementById('menu-saved-game')
 var playerNameShow = document.getElementById('player-name')
 var elapsedTime = document.getElementById('elapsed-time')
+var newBoardName = document.getElementById('new-board-name')
 
 playerName
     .addEventListener("keyup", function(event) {
     event.preventDefault();
     if (event.key === 'Enter') {
         startGame()
+    }
+});
+
+newBoardName
+    .addEventListener("keyup", function(event) {
+    event.preventDefault();
+    if (event.key === 'Enter') {
+        createAndRenderNewBoard()
     }
 });
 
@@ -24,10 +33,12 @@ function unhideBoardPage() {
 
 function hideMenuPage() {
     document.getElementById('menu').classList.add('hide')
+    document.getElementById('description').classList.add('hide')
 }
 
 function unhideMenuPage() {
     document.getElementById('menu').classList.remove('hide')
+    document.getElementById('description').classList.remove('hide')
 }
 
 function hideGameBoard() {
@@ -83,6 +94,30 @@ function unhideClearAndRestartButton() {
     document.getElementById('restartBoard').classList.remove('hide')
 }
 
+function hideEditBoardPage() {
+    document.getElementById('editBoardPage').classList.add('hide')
+}
+
+function unhideEditBoardPage() {
+    document.getElementById('editBoardPage').classList.remove('hide')
+}
+
+function hideNewBoardPage() {
+    document.getElementById('new-board-page').classList.add('hide')
+}
+
+function unhideNewBoardPage() {
+    document.getElementById('new-board-page').classList.remove('hide')
+}
+
+function hideBoardList() {
+    document.getElementById('newBoardList').classList.add('hide')
+}
+
+function unhideBoardList() {
+    document.getElementById('newBoardList').classList.remove('hide')
+}
+
 function backToMenu() {
     hideBoardPage()
     hidePlayerNamePage()
@@ -127,6 +162,62 @@ function newGamePage() {
     unhideBoardPage()
 }
 
+function showBoardList() {
+    hideMenuPage()
+    unhideBoardList()
+    var boardList = loadBoardList()
+    generateBoardList(boardList)
+}
+
+function showScoreBoard() {
+    hideMenuPage()
+    unhideScoreBoard()
+    var scoreBoard = loadScoreBoard()
+    generateScoreBoard(scoreBoard)
+}
+
+function backToBoard() {
+    hideThreeButtons()
+    unhideGameBoard()
+    hideClearAndRestartButton()
+    var scoreBoard = loadScoreBoard()
+    var playerBoard = scoreBoard.find(x => x.player == playerName.value).board
+    generateBoardWithEventListener(playerBoard)
+}
+
+function resetBoard() {
+    clearInterval(stopWatch)
+    timer = 0
+    elapsedTime.innerText = '0h 0m 0s'
+    clearBoard()
+    calculateElapsedTime()
+}
+
+function showSavedGameList() {
+    hideMenuPage()
+    unhideSavedGameList()
+    var scoreBoard = loadSavedGameList()
+    generateSavedGameList(scoreBoard)
+}
+
+function createNewBoard() {
+    hideBoardList()
+    hideBoardPage()
+    unhideNewBoardPage()
+}
+
+function editBoardPage() {
+    hideBoardList()
+    hideNewBoardPage()
+    unhideEditBoardPage()
+}
+
+function backToBoardList() {
+    hideNewBoardPage()
+    hideEditBoardPage()
+    showBoardList()
+}
+
 function renderNewBoard(boardName) {
     playerBoardName = boardName
     hideBoardPage()
@@ -139,13 +230,6 @@ function renderNewBoard(boardName) {
     saveGame(playerName.value, newBoard, timer)
 
     generateBoardWithEventListener(newBoard)
-}
-
-function showSavedGameList() {
-    hideMenuPage()
-    unhideSavedGameList()
-    var scoreBoard = loadSavedGameList()
-    generateSavedGameList(scoreBoard)
 }
 
 function generateSavedGameList(savedBoard) {
@@ -161,7 +245,9 @@ function generateSavedGameList(savedBoard) {
     boardName.innerText = 'Board Name'
     var elapsedTime = document.createElement('th')
     elapsedTime.innerText = 'Elapsed Time'
-    tableHeader.append(date, playerNameHeader, boardName, elapsedTime)
+    var thDelete = document.createElement('th')
+    var thEdit = document.createElement('th')
+    tableHeader.append(date, playerNameHeader, boardName, elapsedTime, thEdit,thDelete)
     savedGameList.append(tableHeader)
     Object.keys(savedBoard).forEach(key => {
         var row = document.createElement('tr')
@@ -169,16 +255,29 @@ function generateSavedGameList(savedBoard) {
         var playerName = document.createElement('td')
         var boardName = document.createElement('td')
         var elapsedTime = document.createElement('td')
+        var tdEdit = document.createElement('td')
+        var tdDelete = document.createElement('td')
         date.innerText = savedBoard[key].dateTime
         playerName.innerText = key
         boardName.innerText = savedBoard[key].boardName
         elapsedTime.innerText = savedBoard[key].elapsedTime
 
-        row.addEventListener('click', () => {
+        var editButton = document.createElement('button')
+        editButton.innerText = 'Resume'
+        editButton.addEventListener('click', function() {
             renderSavedBoard(key)
         })
+        tdEdit.append(editButton)
 
-        row.append(date, playerName, boardName, elapsedTime)
+        var deleteButton = document.createElement('button')
+        deleteButton.innerText = 'Delete'
+        deleteButton.addEventListener('click', function() {
+            removeSavedGame(key)
+            generateSavedGameList(loadSavedGameList())
+        })
+        tdDelete.append(deleteButton)
+
+        row.append(date, playerName, boardName, elapsedTime, tdEdit, tdDelete)
         savedGameList.appendChild(row)
     })
 }
@@ -218,30 +317,6 @@ function clearBoard() {
     generateBoardWithEventListener(playerBoard)
 }
 
-function backToBoard() {
-    hideThreeButtons()
-    unhideGameBoard()
-    hideClearAndRestartButton()
-    var scoreBoard = loadScoreBoard()
-    var playerBoard = scoreBoard.find(x => x.player == playerName.value).board
-    generateBoardWithEventListener(playerBoard)
-}
-
-function resetBoard() {
-    clearInterval(stopWatch)
-    timer = 0
-    elapsedTime.innerText = '0h 0m 0s'
-    clearBoard()
-    calculateElapsedTime()
-}
-
-function showScoreBoard() {
-    hideMenuPage()
-    unhideScoreBoard()
-    var scoreBoard = loadScoreBoard()
-    generateScoreBoard(scoreBoard)
-}
-
 function generateScoreBoard(scoreBoard) {
     console.log("scoreBoard", scoreBoard)
     var scoreTable = document.getElementById('score-board-table')
@@ -251,14 +326,17 @@ function generateScoreBoard(scoreBoard) {
     var playerDateTimeHeader = document.createElement('th')
     var playerTimeHeader = document.createElement('th')
     var playerBoardNameHeader = document.createElement('th')
+    var deleteRecord = document.createElement('th')
     playerNameHeader.innerText = 'Player Name'
     playerBoardNameHeader.innerText = 'Board Name'
     playerTimeHeader.innerText = 'Elapsed Time'
     playerDateTimeHeader.innerText = 'Date'
+
     scoreBoardHeader.appendChild(playerDateTimeHeader)
     scoreBoardHeader.appendChild(playerNameHeader)
     scoreBoardHeader.appendChild(playerBoardNameHeader)
     scoreBoardHeader.appendChild(playerTimeHeader)
+    scoreBoardHeader.appendChild(deleteRecord)
     scoreTable.appendChild(scoreBoardHeader)
     scoreBoard.forEach(x => {
         var tr = document.createElement('tr')
@@ -274,15 +352,17 @@ function generateScoreBoard(scoreBoard) {
         var tdElapsedTime = document.createElement('td')
         tdElapsedTime.innerText = x.elapsedTime
         tr.appendChild(tdElapsedTime)
+        var tdDelete = document.createElement('td')
+        var deleteButton = document.createElement('button')
+        deleteButton.innerText = 'Delete'
+        deleteButton.addEventListener('click', () => {
+            deleteRecordFromScoreBoard(x.player)
+            generateScoreBoard(loadScoreBoard())
+        })
+        tdDelete.appendChild(deleteButton)
+        tr.appendChild(tdDelete)
         scoreTable.appendChild(tr)
     })
-}
-
-function showBoardList() {
-    hideMenuPage()
-    unhideBoardList()
-    var boardList = loadBoardList()
-    generateBoardList(boardList)
 }
 
 function generateBoardList(boardList) {
@@ -290,18 +370,29 @@ function generateBoardList(boardList) {
     boardListTable.innerHTML = ''
     var boardListHeader = document.createElement('tr')
     var boardNameHeader = document.createElement('th')
+    var deleteBoard = document.createElement('th')
     boardNameHeader.innerText = 'Board Name'
     boardListHeader.appendChild(boardNameHeader)
+    boardListHeader.appendChild(deleteBoard)
     boardListTable.appendChild(boardListHeader)
     Object.keys(boardList).forEach(key => {
         var tr = document.createElement('tr')
         var tdBoardName = document.createElement('td')
         tdBoardName.innerText = key
-        tr.appendChild(tdBoardName)
-        tr.addEventListener('click', () => {
+        tdBoardName.addEventListener('click', () => {
             editBoardPage()
             renderNewBoardPage(key,boardList[key])
         })
+        tr.appendChild(tdBoardName)
+        var tdDelete = document.createElement('td')
+        var deleteButton = document.createElement('button')
+        deleteButton.innerText = 'Delete'
+        deleteButton.addEventListener('click', () => {
+            deleteBoardFromBoardList(key)
+            generateBoardList(loadBoardList())
+        })
+        tdDelete.appendChild(deleteButton)
+        tr.appendChild(tdDelete)
         boardListTable.appendChild(tr)
     })
 }
@@ -312,6 +403,7 @@ function renderNewBoardPage(name, dataMatrix) {
     var h2 = document.createElement('h2')
     h2.innerText = name
     h2.id = 'existing-board-name'
+    h2.classList.add('board-name-style')
     newBoardBox.appendChild(h2)
     generateBoard(dataMatrix, newBoardBox, 'newBoard')
     delegate(document.getElementById('newBoard'), 'td', 'click', newBoardEventListener)
@@ -343,48 +435,6 @@ function newBoardEventListener(event, ev) {
     delegate(document.getElementById('newBoard'), 'td', 'click', newBoardEventListener)
 }
 
-
-function hideBoardList() {
-    document.getElementById('newBoardList').classList.add('hide')
-}
-
-function unhideBoardList() {
-    document.getElementById('newBoardList').classList.remove('hide')
-}
-
-function createNewBoard() {
-    hideBoardList()
-    unhideNewBoardPage()
-}
-
-function editBoardPage() {
-    hideBoardList()
-    hideNewBoardPage()
-    unhideEditBoardPage()
-}
-
-function hideEditBoardPage() {
-    document.getElementById('editBoardPage').classList.add('hide')
-}
-
-function unhideEditBoardPage() {
-    document.getElementById('editBoardPage').classList.remove('hide')
-}
-
-function unhideNewBoardPage() {
-    document.getElementById('new-board-page').classList.remove('hide')
-}
-
-function hideNewBoardPage() {
-    document.getElementById('new-board-page').classList.add('hide')
-}
-
-function backToBoardList() {
-    hideNewBoardPage()
-    hideEditBoardPage()
-    showBoardList()
-}
-
 function generatePlayerBoardList() {
     var boardList = loadBoardList()
     var playerBoardList = document.getElementById('player-board-list')
@@ -395,6 +445,7 @@ function generatePlayerBoardList() {
 
         var h2 = document.createElement('h2')
         h2.innerText = key
+        h2.classList.add('board-name-style')
         div.appendChild(h2)
 
         var button = document.createElement('button')
@@ -412,4 +463,46 @@ function generatePlayerBoardList() {
     })
 }
 
-// function renderSavedBoard() {}
+function createAndRenderNewBoard() {
+    var boardName = document.getElementById('new-board-name').value;
+    if (boardName == '') {
+        alert('Please enter a board name')
+        return
+    }
+    document.getElementById('new-board-name').value = ''
+    var boardSizeInput = document.getElementById('board-size').value;
+    console.log(boardSizeInput)
+    var dataMatrix = []
+    for (var i = 0; i < boardSizeInput; i++) {
+        var row = []
+        for (var j = 0; j < boardSizeInput; j++) {
+            row.push('plain')
+        }
+        dataMatrix.push(row)
+    }
+    var boardList = loadBoardList()
+    boardList[boardName] = dataMatrix
+    saveBoardList(boardList)
+    editBoardPage()
+    renderNewBoardPage(boardName, dataMatrix)
+}
+
+function resetNewBoard() {
+    var boardName = document.getElementById('existing-board-name').innerText
+    var boardList = loadBoardList()
+    var dataMatrix = boardList[boardName]
+    var newBoardBox = document.getElementById('new-board-box')
+    newBoardBox.removeChild(document.getElementById('newBoard'))
+    var len = dataMatrix.length;
+    dataMatrix = []
+    
+    for (var i = 0; i < len; i++) {
+        var row = []
+        for (var j = 0; j < len; j++) row.push('plain')
+        dataMatrix.push(row)
+    }
+    boardList[boardName] = dataMatrix
+    saveBoardList(boardList)
+    generateBoard(dataMatrix, newBoardBox, 'newBoard')
+    delegate(document.getElementById('newBoard'), 'td', 'click', newBoardEventListener)
+}

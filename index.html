@@ -42,6 +42,15 @@
               </div>
             </div>
           </div>
+          <!-- description -->
+          <div id="description" class="col-12 description-box-style">
+            <div id="description-text" class="description-text-style">
+              <p>
+                Light Bulb is a game where you have to turn on all the lights on the board. <br> You can turn on a light by clicking on it. When you click on a light, it and its adjacent lights will change their state. <br> The goal is to turn on all the lights on the board. <br> Lightbulb cannot illuminate each other. <br> Good luck!
+                <br> NOTE: For editing the board/map, please click on the cell to change the state of the cell. <br> There are 5 states. <br> (plain, obstacle, obstacle with numbers from 0..4) <br> Click continuously until the cell becomes what you want.
+              </p>
+            </div>
+          </div>
           <!-- menu buttons END -->
           <!-- scoreboard starts -->
           <div>
@@ -88,7 +97,7 @@
               <div class="row">
                 <div class="col-4">
                   <div class="board-button-box">
-                    <button id="new-board-name-cancel" class="game-option-button" onclick="backToMenu()">Cancel</button>
+                    <button id="new-board-name-cancel" class="game-option-button" onclick="backToMenu()">Back</button>
                   </div>
                 </div>
                 <div class="col-4">
@@ -109,8 +118,7 @@
                 <div class="new-board-name-input">
                   <input id="new-board-name" class="player-name-input" type="text" placeholder="Enter new board name" />
                   <div class="generate-board-button">
-                    <input class="quantity" min="1" max="15" name="quantity" value="1" type="number" />
-                    <button id="generate-board" class="" onclick="generateBoard()">Generate Board</button>
+                    <input id="board-size" class="quantity" min="5" max="15" name="quantity" value="5" type="number" />
                   </div>
                 </div>
               </div>
@@ -120,9 +128,10 @@
                     <button id="new-board-name-cancel" class="game-option-button" onclick="backToBoardList()">Back</button>
                   </div>
                 </div>
+                <div class="col-4"></div>
                 <div class="col-4">
                   <div class="board-button-box">
-                    <button id="new-board-name-create" class="game-option-button" onclick="createNewBoardName()">Generate</button>
+                    <button id="new-board-name-create" class="game-option-button" onclick="createAndRenderNewBoard()">Generate</button>
                   </div>
                 </div>
               </div>
@@ -136,12 +145,12 @@
               <div class="row">
                 <div class="col-6">
                   <div class="board-button-box">
-                    <button id="new-board-name-cancel" class="game-option-button" onclick="backToBoardList()">Back To Menu</button>
+                    <button id="new-board-name-cancel" class="game-option-button" onclick="backToBoardList()">Back</button>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="board-button-box">
-                    <button id="new-board-name-clear" class="game-option-button" onclick="backToMenu()">Reset</button>
+                    <button id="new-board-name-clear" class="game-option-button" onclick="resetNewBoard()">Reset</button>
                   </div>
                 </div>
               </div>
@@ -158,14 +167,14 @@
               <div class="row">
                 <div class="col-6 button-col">
                   <div class="board-button-box">
-                    <button class="board-button" onclick="backToMenu()">
+                    <button class="game-option-button" onclick="backToMenu()">
                         Back
                     </button>
                   </div>
                 </div>
                 <div class="col-6">
                   <div class="board-button-box">
-                    <button class="board-button" onclick="startGame()">
+                    <button class="game-option-button" onclick="startGame()">
                         Start
                     </button>
                   </div>
@@ -180,14 +189,14 @@
             <div id="boardListMenu" class="row hide">
               <div class="col-6">
                 <div class="board-button-box">
-                  <button class="board-button" onclick="backToPlayerName()">
+                  <button class="game-option-button" onclick="backToPlayerName()">
                       Back
                   </button>
                 </div>
               </div>
               <div class="col-6">
                 <div class="board-button-box">
-                  <button class="board-button">
+                  <button class="game-option-button" onclick="createNewBoard()">
                       Create New Board
                   </button>
                 </div>
@@ -212,21 +221,21 @@
             <div id="gameBoardMenu" class="row hide">
               <div class="col-4 button-col">
                 <div class="board-button-box">
-                  <button class="board-button" onclick="backToMenu()">
+                  <button class="game-option-button" onclick="backToMenu()">
                       Back To Main Menu
                   </button>
                 </div>
               </div>
               <div id="clearBoard" class="col-4">
                 <div class="board-button-box">
-                  <button class="board-button" onclick="clearBoard()">
+                  <button class="game-option-button" onclick="clearBoard()">
                       Clear Board
                   </button>
                 </div>
               </div>
               <div id="restartBoard" class="col-4">
                 <div class="board-button-box">
-                  <button class="board-button" onclick="resetBoard()">
+                  <button class="game-option-button" onclick="resetBoard()">
                       Restart Game
                   </button>
                 </div>
@@ -243,21 +252,21 @@
             <div class="row">
               <div class="col-4 button-col">
                 <div class="board-button-box">
-                  <button class="board-button" onclick="backToMenu()">
+                  <button class="game-option-button" onclick="backToMenu()">
                       Back To Main Menu
                   </button>
                 </div>
               </div>
               <div class="col-4">
                 <div class="board-button-box">
-                  <button class="board-button" onclick="clearBoard()">
+                  <button class="game-option-button" onclick="clearBoard()">
                       Restart Game
                   </button>
                 </div>
               </div>
               <div class="col-4">
                 <div class="board-button-box">
-                  <button class="board-button" onclick="backToBoard()">
+                  <button class="game-option-button" onclick="backToBoard()">
                       Back To Board
                   </button>
                 </div>
